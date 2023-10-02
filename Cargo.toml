@@ -5,4 +5,11 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+
+# We currently don't forward any features to serde_json or serde_path_to_error.
+# I'm happy to accpet PRs that add support for that.
+
 [dependencies]
+serde_json = "1.0.107"
+serde_path_to_error = "0.1.14"
