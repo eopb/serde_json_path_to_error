@@ -11,5 +11,6 @@ edition = "2021"
 # I'm happy to accpet PRs that add support for that.
 
 [dependencies]
+serde = "1.0.188"
 serde_json = "1.0.107"
 serde_path_to_error = "0.1.14"
