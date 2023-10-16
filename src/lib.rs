@@ -1,25 +1,23 @@
 // Ready
-pub use serde_json::{
-    json, to_string, to_string_pretty, to_vec, to_vec_pretty, to_writer, to_writer_pretty, Map,
-};
-pub use value::{to_value, Number, Value};
+pub use serde_json::{json, Map};
 
 pub use error::{Error, Result};
 
-// Maybe
+// Hard
 pub use de::{Deserializer, StreamDeserializer};
-pub use serde_json::Serializer;
 
 pub use de::{from_reader, from_slice, from_str};
 pub mod de {
-    // TODO
-    pub use serde_json::de::{Deserializer, IoRead, Read, SliceRead, StrRead, StreamDeserializer};
+    // Hard
+    pub use serde_json::de::{Deserializer, StreamDeserializer};
 
     use crate::Result;
 
     use std::io;
 
-    use serde::de::{Deserialize, DeserializeOwned};
+    pub use serde_json::de::{IoRead, Read, SliceRead, StrRead};
+
+    use serde::{de::DeserializeOwned, Deserialize};
 
     /// Deserialize an instance of type `T` from a string of JSON text.
     ///
@@ -74,12 +72,54 @@ pub mod error {
     /// Alias for a `Result` with the error type `serde_json_path_to_error::Error`.
     pub type Result<T> = std::result::Result<T, Error>;
 }
+
+pub use ser::{
+    to_string, to_string_pretty, to_vec, to_vec_pretty, to_writer, to_writer_pretty, CharEscape,
+    CompactFormatter, Formatter, PrettyFormatter, Serializer,
+};
 pub mod ser {
     use crate::Result;
     use serde::Serialize;
 
-    // TODO
-    pub use serde_json::ser::*;
+    static UTF8_ERROR: &'static str =
+        "`serde_json` internally guarantees UTF8 and uses `String::from_utf8_unchecked`. \
+        If this error throws, `serde_json` must have broken this guarantee";
+
+    // Don't need doing
+    pub use serde_json::ser::{CharEscape, CompactFormatter, PrettyFormatter};
+
+    // Later
+    pub use serde_json::ser::{Formatter, Serializer};
+
+    /// Serialize the given data structure as JSON into the I/O stream.
+    ///
+    /// Equivalent to [serde_json::to_writer] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_writer] for more documentation.
+    pub fn to_writer<W, T>(writer: W, value: &T) -> Result<()>
+    where
+        W: std::io::Write,
+        T: ?Sized + Serialize,
+    {
+        let mut ser = Serializer::new(writer);
+        serde_path_to_error::serialize(&value, &mut ser)
+    }
+
+    /// Serialize the given data structure as a JSON byte vector.
+    ///
+    /// Equivalent to [serde_json::to_vec] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_vec] for more documentation.
+    pub fn to_vec<T>(value: &T) -> Result<Vec<u8>>
+    where
+        T: ?Sized + Serialize,
+    {
+        let mut bytes = Vec::new();
+
+        to_writer(&mut bytes, value)?;
+
+        Ok(bytes)
+    }
 
     /// Serialize the given data structure as a String of JSON.
     ///
@@ -90,26 +130,88 @@ pub mod ser {
     where
         T: ?Sized + Serialize,
     {
-        let mut out = Vec::new();
-        let jser = &mut serde_json::Serializer::new(&mut out);
+        let vec = to_vec(value)?;
 
-        serde_path_to_error::serialize(&value, jser)
+        Ok(String::from_utf8(vec).expect(UTF8_ERROR))
+    }
+
+    /// Serialize the given data structure as pretty-printed JSON into the I/O
+    /// stream.
+    ///
+    /// Equivalent to [serde_json::to_writer_pretty] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_writer_pretty] for more documentation.
+    pub fn to_writer_pretty<W, T>(writer: W, value: &T) -> Result<()>
+    where
+        W: std::io::Write,
+        T: ?Sized + Serialize,
+    {
+        let mut ser = Serializer::pretty(writer);
+        serde_path_to_error::serialize(&value, &mut ser)
+    }
+
+    /// Serialize the given data structure as a pretty-printed JSON byte vector.
+    ///
+    /// Equivalent to [serde_json::to_vec_pretty] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_vec_pretty] for more documentation.
+    pub fn to_vec_pretty<T>(value: &T) -> Result<Vec<u8>>
+    where
+        T: ?Sized + Serialize,
+    {
+        let mut bytes = Vec::new();
+
+        to_writer_pretty(&mut bytes, value)?;
+
+        Ok(bytes)
+    }
+
+    /// Serialize the given data structure as a pretty-printed String of JSON.
+    ///
+    /// Equivalent to [serde_json::to_string_pretty] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_string_pretty] for more documentation.
+    pub fn to_string_pretty<T>(value: &T) -> Result<String>
+    where
+        T: ?Sized + Serialize,
+    {
+        let vec = to_vec_pretty(value)?;
+
+        Ok(String::from_utf8(vec).expect(UTF8_ERROR))
     }
 }
-pub mod map {
 
-    // TODO
-    pub use serde_json::map::*;
+pub mod map {
+    pub use serde_json::map::{
+        Entry, IntoIter, Iter, IterMut, Keys, OccupiedEntry, VacantEntry, Values, ValuesMut,
+    };
 }
 
-pub use value::from_value;
+pub use value::{from_value, to_value, Number, Value};
 pub mod value {
-    use serde::de::DeserializeOwned;
+    use serde::{de::DeserializeOwned, Serialize};
 
-    // TODO
-    pub use serde_json::value::{to_value, Index, Number, Serializer, Value};
+    pub use serde_json::value::{Index, Number, Value};
 
-    use crate::Result;
+    // Hard
+    pub use serde_json::value::Serializer;
+
+    use crate::{Error, Result};
+
+    /// Convert a `T` into `serde_json::Value` which is an enum that can represent
+    ///
+    /// Equivalent to [serde_json::to_value] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_value] for more documentation.
+    pub fn to_value<T>(value: T) -> Result<Value>
+    where
+        T: Serialize,
+    {
+        let mut track = serde_path_to_error::Track::new();
+        let ps = serde_path_to_error::Serializer::new(Serializer, &mut track);
+
+        value.serialize(ps).map_err(|e| Error::new(track.path(), e))
+    }
 
     /// Interpret a `serde_json::Value` as an instance of type `T`.
     ///
