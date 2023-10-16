@@ -75,9 +75,26 @@ pub mod error {
     pub type Result<T> = std::result::Result<T, Error>;
 }
 pub mod ser {
+    use crate::Result;
+    use serde::Serialize;
 
     // TODO
     pub use serde_json::ser::*;
+
+    /// Serialize the given data structure as a String of JSON.
+    ///
+    /// Equivalent to [serde_json::to_string] but with errors extended with [serde_path_to_error].
+    ///
+    /// See [serde_json::to_string] for more documentation.
+    pub fn to_string<T>(value: &T) -> Result<String>
+    where
+        T: ?Sized + Serialize,
+    {
+        let mut out = Vec::new();
+        let jser = &mut serde_json::Serializer::new(&mut out);
+
+        serde_path_to_error::serialize(&value, jser)
+    }
 }
 pub mod map {
 
