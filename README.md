@@ -99,10 +99,10 @@ fn main() {
 There are still a small number of items that don't return enriched errors.
 I'd be interested in accepting PRs that wrap these items.
 
-- [serde_json::de::Deserializer]
-- [serde_json::de::StreamDeserializer]
-- [serde_json::ser::Serializer]
-- [serde_json::value::Serializer]
+- [serde_json::de::Deserializer] [#6](https://github.com/eopb/serde_json_path_to_error/issues/6)
+- [serde_json::de::StreamDeserializer] [#5](https://github.com/eopb/serde_json_path_to_error/issues/5)
+- [serde_json::ser::Serializer] [#4](https://github.com/eopb/serde_json_path_to_error/issues/4)
+- [serde_json::value::Serializer] [#3](https://github.com/eopb/serde_json_path_to_error/issues/3)
 
 
 [serde_json]: https://docs.rs/serde_json/latest/serde_json/
