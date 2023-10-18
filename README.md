@@ -1,10 +1,10 @@
 # serde_json_path_to_error
 
 
-[![License](https://img.shields.io/crates/l/serde_path_to_error.svg)](https://crates.io/crates/serde_path_to_error)
-[![Latest version](https://img.shields.io/crates/v/serde_path_to_error.svg)](https://crates.io/crates/serde_path_to_error)
-[![Latest Docs](https://docs.rs/serde_path_to_error/badge.svg)](https://docs.rs/serde_path_to_error/)
-[![downloads-badge](https://img.shields.io/crates/d/serde_path_to_error.svg)](https://crates.io/crates/serde_path_to_error)
+[![License](https://img.shields.io/crates/l/serde_json_path_to_error.svg)](https://crates.io/crates/serde_json_path_to_error)
+[![Latest version](https://img.shields.io/crates/v/serde_json_path_to_error.svg)](https://crates.io/crates/serde_json_path_to_error)
+[![Latest Docs](https://docs.rs/serde_json_path_to_error/badge.svg)](https://docs.rs/serde_json_path_to_error/)
+[![downloads-badge](https://img.shields.io/crates/d/serde_json_path_to_error.svg)](https://crates.io/crates/serde_json_path_to_error)
 
 [API docs](https://docs.rs/serde_path_to_error/)
 
