@@ -7,7 +7,7 @@
 
 [API docs](https://docs.rs/serde_path_to_error/)
 
-A drop in replacement for [serde_json] where errors are enriched with [serde_path_to_error].
+A drop in replacement for [serde_json] with errors enriched by [serde_path_to_error].
 
 This is usually a better default since it makes it easier to debug when serialization or deserialization fails.
 Paths are particularly helpful when your schema is large or when it's difficult to see the raw data that causes an error.
