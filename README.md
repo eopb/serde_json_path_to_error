@@ -9,40 +9,35 @@
 
 A drop in replacement for [serde_json] where errors are enriched with [serde_path_to_error] by default.
 
-This is a better default when you need to debug why serialization or deserialization failed.
-Paths are particularly helpful when your schema is large or when it's difficault to see the raw data that cause an error.
-
-You may want to avoid this crate if you've benchmarked your system and found serialization or deserialization to be a bottleneck.
+This is usually a better default since it makes it easier to debug when serialization or deserialization fails.
+Paths are particularly helpful when your schema is large or when it's difficult to see the raw data that causes an error.
 
 This crate exposes the same items as [serde_json], just with different error types.
 For more detailed documentation see [serde_json].
 
 ## Migrating from [serde_json]
 
-To enrich your errors simply replace your dependancy on [serde_json] with one on serde_json_path_to_error.
+To enrich your errors simply replace your dependency on [serde_json] with one on serde_json_path_to_error.
 
 ```diff
 - serde_json = "1.0"
 + serde_json = { package = "serde_json_path_to_error", version = "0.1" }
 ```
 
-Alternatively, you can add serde_json_path_to_error as a regular dependancy.
+Alternatively, you can add serde_json_path_to_error as a regular dependancy...
 
 ```text
 # cargo add serde_json_path_to_error 
 ```
 
-And rename the crate in your crate root to get the same API as [serde_json].
+..and rename the crate in your crate root to get the same API as [serde_json].
 
 ```rust
 extern crate serde_json_path_to_error as serde_json;
 ```
 
-
-In most cases your project should continue to compile.
+In most cases, your project should continue to compile after migrating.
 Your errors will now be enriched with additional context showing the path to serialization and deserialization failures.
-
-## Examples
 
 ```rust
 // the rename trick shown above
