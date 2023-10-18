@@ -98,3 +98,8 @@ fn main() {
 ```
 
 ## Caveats
+
+
+
+[serde_json]: https://docs.rs/serde_json/latest/serde_json/
+[serde_path_to_error]: https://docs.rs/serde_json/latest/serde_path_to_error/
