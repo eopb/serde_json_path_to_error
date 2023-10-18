@@ -1,6 +1,6 @@
 [package]
 name = "serde_json_path_to_error"
-version = "0.0.2"
+version = "0.1.0"
 authors = ["Ethan Brierley <ethanboxx@gmail.com>"]
 license = "MIT/Apache-2.0"
 readme = "README.md"
@@ -11,14 +11,14 @@ keywords = ["serde", "json", "serialization"]
 documentation = "https://docs.rs/serde_json_path_to_error/"
 repository = "https://github.com/eopb/serde_json_path_to_error"
 edition = "2021"
-# rust-version = "todo"
+rust-version = "1.56"
 exclude = [".github"]
 
 
 [features]
 
 # We currently don't forward any features to serde_json or serde_path_to_error.
-# I'm happy to accpet PRs that add support for that.
+# I'm happy to accept PRs that add support for that.
 
 [dependencies]
 serde = "1.0.188"
