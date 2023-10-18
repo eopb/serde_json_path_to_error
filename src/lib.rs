@@ -1,16 +1,14 @@
 #![doc = include_str!("../README.md")]
 
-// Ready
-pub use serde_json::{json, Map};
+pub use serde_json::json;
 
-pub use error::{Error, Result};
-
-// Hard
 pub use de::{Deserializer, StreamDeserializer};
 
+#[doc(inline)]
 pub use de::{from_reader, from_slice, from_str};
+/// Deserialize JSON data to a Rust data structure.
 pub mod de {
-    // Hard
+    // See caveats in README.md
     pub use serde_json::de::{Deserializer, StreamDeserializer};
 
     use crate::Result;
@@ -65,6 +63,8 @@ pub mod de {
     }
 }
 
+#[doc(inline)]
+pub use error::{Error, Result};
 /// When serializing or deserializing JSON goes wrong.
 pub mod error {
     pub use serde_json::error::Category;
@@ -75,10 +75,12 @@ pub mod error {
     pub type Result<T> = std::result::Result<T, Error>;
 }
 
+#[doc(inline)]
 pub use ser::{
-    to_string, to_string_pretty, to_vec, to_vec_pretty, to_writer, to_writer_pretty, CharEscape,
-    CompactFormatter, Formatter, PrettyFormatter, Serializer,
+    to_string, to_string_pretty, to_vec, to_vec_pretty, to_writer, to_writer_pretty, Formatter,
+    Serializer,
 };
+/// Serialize a Rust data structure into JSON data.
 pub mod ser {
     use crate::Result;
     use serde::Serialize;
@@ -87,11 +89,10 @@ pub mod ser {
         "`serde_json` internally guarantees UTF8 and uses `String::from_utf8_unchecked`. \
         If this error throws, `serde_json` must have broken this guarantee";
 
-    // Don't need doing
-    pub use serde_json::ser::{CharEscape, CompactFormatter, PrettyFormatter};
+    pub use serde_json::ser::{CharEscape, CompactFormatter, Formatter, PrettyFormatter};
 
-    // Later
-    pub use serde_json::ser::{Formatter, Serializer};
+    // See caveats in README.md
+    pub use serde_json::ser::Serializer;
 
     /// Serialize the given data structure as JSON into the I/O stream.
     ///
@@ -183,19 +184,28 @@ pub mod ser {
     }
 }
 
+#[doc(inline)]
+pub use map::Map;
+/// A map of String to serde_json::Value.
+///
+/// See [serde_json::map] for more documentation.
 pub mod map {
     pub use serde_json::map::{
-        Entry, IntoIter, Iter, IterMut, Keys, OccupiedEntry, VacantEntry, Values, ValuesMut,
+        Entry, IntoIter, Iter, IterMut, Keys, Map, OccupiedEntry, VacantEntry, Values, ValuesMut,
     };
 }
 
+#[doc(inline)]
 pub use value::{from_value, to_value, Number, Value};
+/// The Value enum, a loosely typed way of representing any valid JSON value.
+///
+/// See [serde_json::value] for more documentation.
 pub mod value {
     use serde::{de::DeserializeOwned, Serialize};
 
-    pub use serde_json::value::{Index, Number, Value};
+    pub use serde_json::value::{Index, Map, Number, Value};
 
-    // Hard
+    // See caveats in README.md
     pub use serde_json::value::Serializer;
 
     use crate::{Error, Result};

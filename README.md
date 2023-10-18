@@ -1,6 +1,5 @@
 # serde_json_path_to_error
 
-
 [![License](https://img.shields.io/crates/l/serde_json_path_to_error.svg)](https://crates.io/crates/serde_json_path_to_error)
 [![Latest version](https://img.shields.io/crates/v/serde_json_path_to_error.svg)](https://crates.io/crates/serde_json_path_to_error)
 [![Latest Docs](https://docs.rs/serde_json_path_to_error/badge.svg)](https://docs.rs/serde_json_path_to_error/)
@@ -14,6 +13,9 @@ This is a better default when you need to debug why serialization or deserializa
 Paths are particularly helpful when your schema is large or when it's difficault to see the raw data that cause an error.
 
 You may want to avoid this crate if you've benchmarked your system and found serialization or deserialization to be a bottleneck.
+
+This crate exposes the same items as [serde_json], just with different error types.
+For more detailed documentation see [serde_json].
 
 ## Migrating from [serde_json]
 
@@ -99,6 +101,13 @@ fn main() {
 
 ## Caveats
 
+There are still a small number of items that don't return enriched errors.
+I'd be interested in accepting PRs that wrap these items.
+
+- [serde_json::de::Deserializer]
+- [serde_json::de::StreamDeserializer]
+- [serde_json::ser::Serializer]
+- [serde_json::value::Serializer]
 
 
 [serde_json]: https://docs.rs/serde_json/latest/serde_json/
