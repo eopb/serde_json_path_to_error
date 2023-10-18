@@ -85,7 +85,7 @@ pub mod ser {
     use crate::Result;
     use serde::Serialize;
 
-    static UTF8_ERROR: &'static str =
+    static UTF8_ERROR: &str =
         "`serde_json` internally guarantees UTF8 and uses `String::from_utf8_unchecked`. \
         If this error throws, `serde_json` must have broken this guarantee";
 
