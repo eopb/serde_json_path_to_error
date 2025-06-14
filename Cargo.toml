@@ -16,9 +16,7 @@ exclude = [".github"]
 
 
 [features]
-
-# We currently don't forward any features to serde_json or serde_path_to_error.
-# I'm happy to accept PRs that add support for that.
+raw_value = ["serde_json/raw_value"]
 
 [dependencies]
 serde = "1.0.188"
