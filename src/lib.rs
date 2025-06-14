@@ -208,6 +208,9 @@ pub mod value {
     // See caveats in README.md
     pub use serde_json::value::Serializer;
 
+    #[cfg(feature = "raw_value")]
+    pub use serde_json::value::{to_raw_value, RawValue};
+
     use crate::{Error, Result};
 
     /// Convert a `T` into `serde_json::Value` which is an enum that can represent
